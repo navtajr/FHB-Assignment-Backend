@@ -78,9 +78,6 @@ app.get('/api/notes/:id', (request, response) => {
   }
 })
 
-test('simple test', () => {
-  expect(true).toBe(true);
-});
 
 
 const PORT = 3001
