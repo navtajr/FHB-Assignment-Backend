@@ -1,8 +1,11 @@
 const request = require('supertest');
-const express = require('express');
-const app = require('../index.js'); // Adjust the path if necessary
+const { app, server } = require('../index.js'); // Adjust the path if necessary
 
 describe('Notes API', () => {
+    afterAll(() => {
+        server.close();
+    });
+
     it('should return all notes', async () => {
         const response = await request(app).get('/api/notes');
         expect(response.statusCode).toBe(200);
