@@ -34,3 +34,7 @@ jobs:
       # Installs the project dependencies.
       - name: Install dependencies
         run: npm install
+
+      # Step 4: Start the application in the background
+      - name: Start application
+        run: npm start &
