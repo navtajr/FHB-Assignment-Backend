@@ -35,9 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Start the application in the background
-      #- name: Start application
-      #  run: npm start &
+      - name: Run tests
+        run: npm test
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/noteapp:${{ github.sha }} .
