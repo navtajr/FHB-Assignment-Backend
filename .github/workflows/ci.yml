@@ -28,7 +28,7 @@ jobs:
       run: npm test
 
     #- name: Lint code
-    #  run: npm run lint
+    # - run: npm run lint
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
