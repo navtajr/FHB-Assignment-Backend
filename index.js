@@ -78,6 +78,11 @@ app.get('/api/notes/:id', (request, response) => {
   }
 })
 
+test('simple test', () => {
+  expect(true).toBe(true);
+});
+
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
