@@ -1,46 +1,61 @@
+# The name of the workflow, which appears in the GitHub Actions UI.
 name: CI
 
-on: [push, pull_request]
+# Specifies the events that trigger this workflow.
+on:
+  # Trigger the workflow on push events to the main branch.
+  push:
+    branches:
+      - main
+  # Trigger the workflow on pull request events targeting the main branch.
+  pull_request:
+    branches:
+      - main
 
+# Defines the jobs to run as part of this workflow.
 jobs:
+  # A job named 'build'.
   build:
+    # Specifies the type of machine to run this job on.
     runs-on: ubuntu-latest
 
+    # The steps to run as part of this job.
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      # Checks out the repository's code so the job can access it.
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      # Sets up Node.js on the runner machine.
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      # Installs the project dependencies.
+      - name: Install dependencies
+        run: npm install
 
-    - name: Lint
-      run: npm run lint
+      - name: Run ESLint
+        run: npm run lint
 
-    - name: Test
-      run: npm test
+      - name: Run tests
+        run: npm test
 
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@v2.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args: >
-          -Dsonar.projectKey=navtajr_FHB-Assignment-Backend
-          -Dsonar.organization=navtajr
-          -Dsonar.host.url=https://sonarcloud.io
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v2.2.0
+        with:
+          args: >
+            -Dsonar.projectKey=navtajr_FHB-Assignment-Backend
+            -Dsonar.organization=navtajr
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-    - name: Build Docker image
-      run: |
-        docker build . --file Dockerfile --tag your-dockerhub-username/your-repo-name:latest
 
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/noteapp:${{ github.sha }} .
 
-    - name: Push Docker image
-      run: docker push your-dockerhub-username/your-repo-name:latest
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/noteapp:${{ github.sha }}
