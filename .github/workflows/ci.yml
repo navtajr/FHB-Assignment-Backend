@@ -51,7 +51,7 @@ jobs:
             -Dsonar.projectKey=navtajr_FHB-Assignment-Backend
             -Dsonar.organization=navtajr
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SonarCubeToken }}
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/noteapp:${{ github.sha }} .
