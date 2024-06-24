@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '20'
 
-      # Installs the project dependencies.
+      # Installs the project dependenciesc.
       - name: Install dependencies
         run: npm install
 
