@@ -42,12 +42,16 @@ jobs:
         run: npm test
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@v1.4
         with:
           projectKey: navtajr_FHB-Assignment-Backend
           organization: navtajr
+          scannerMode: cli
+          args: >
+            -Dsonar.projectKey=navtajr_FHB-Assignment-Backend
+            -Dsonar.organization=navtajr
         env:
-          SONAR_TOKEN: ${{ secrets.SonarCubeToken }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/noteapp:${{ github.sha }} .
